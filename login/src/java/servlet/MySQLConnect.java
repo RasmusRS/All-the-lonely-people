@@ -9,16 +9,18 @@ import java.io.*;
 import javax.servlet.http.*;
 import javax.servlet.*;
 import java.sql.*;
+import javax.servlet.annotation.WebServlet;
 
 /**
  * Servlet implementation class MySQLConnect
  */
+@WebServlet("/MySQLConnect")
 public class MySQLConnect extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost/IS_202";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/IS_202";
 
     //  Database credentials
     static final String USER = "root";
@@ -31,7 +33,10 @@ public class MySQLConnect extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String user = request.getParameter("mail");
-        String pass = request.getParameter("u_password");
+        String pass = request.getParameter("pass");
+        System.out.println("**Passord =" + pass);
+        
+        
         Connection conn = null;
         Statement stmt = null;
         String password = null;
@@ -47,7 +52,7 @@ public class MySQLConnect extends HttpServlet {
             System.out.println("Creating statement...");
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT u_password FROM user WHERE mail = " + user;
+            sql = "SELECT mail, u_password FROM user";
             ResultSet rs = stmt.executeQuery(sql);
 
             //STEP 5: Extract data from result set
